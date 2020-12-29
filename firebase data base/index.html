@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+</head>
+<body>
+ <input type="text" id="Uinput">
+ <button id="btn-1" onclick="addData()">ADD</button>
+
+ <button onclick="getData()">GET DATA</button>
+
+<div>
+    <h1>
+        oders:
+    </h1>
+    <div id="orderList"></div>
+</div>
+
+
+ <script>
+
+
+// Initialize Cloud Firestore through Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyDOBlU1EfkvZc9yqsyGSdONA-0zjBrYvFc",
+  authDomain: "madarsa-qadriya-ashrafiya.firebaseapp.com",
+  projectId:"madarsa-qadriya-ashrafiya",    
+});
+
+var db = firebase.firestore();
+
+function addData(){
+
+    
+    
+    db.collection("orders").add({
+        date:new Date().getTime(),
+        customerNAme:document.getElementById("Uinput").value,
+        orderTitle:"khoya",
+        qtyInKg:2,
+        additionComments:"",
+        address:"h123, st#23, karachi",
+        phoneNumber:"0300-1234567"
+    })
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+
+
+}
+
+function getData(){
+
+    db.collection("orders").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            
+            document.getElementById("orderList").innerHTML=
+            `<p>${doc.id} => ${doc.data()}</p>`
+            
+            console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+        });
+    });
+
+
+}
+
+
+
+
+    </script>
+    </body>
+    </html>
